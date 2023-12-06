@@ -16,8 +16,6 @@ class Migration(migrations.Migration):
                 ('name', models.TextField()),
                 ('age', models.IntegerField()),
                 ('bio', models.TextField()),
-                ('song_count', models.IntegerField()),
-                ('song', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='levelupapi.song')),
             ],
         ),
         
@@ -26,38 +24,18 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('title', models.TextField()),
-                ('artist', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='levelupapi.artist'))
+                ('artist_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='tunaapi.artist')),
                 ('album', models.TextField()),
                 ('length', models.IntegerField()),
-                ('genre', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='levelupapi.genre')),
             ],
         ),
         
         migrations.CreateModel(
-            name='Song',
+            name='Genre',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('description', models.TextField()),
-                ('song', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='levelupapi.song'))
+                ('description', models.CharField(max_length=50)),
             ],
-        ),
-        
-        migrations.AddField(
-            model_name='song',
-            name='artist',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='levelupapi.artist'),
-        ),
-        
-        migrations.AddField(
-            model_name='song',
-            name='genre',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='levelupapi.genre'),
-        ),
-        
-        migrations.AddField(
-            model_name='song',
-            name='artist',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='levelupapi.artist'),
         ),
         
         migrations.CreateModel(

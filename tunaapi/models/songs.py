@@ -6,4 +6,3 @@ class Song(models.Model):
   artist = models.ForeignKey(Artist, on_delete=models.CASCADE)
   album = models.CharField(max_length=50)
   length = models.IntegerField()
-  genre = models.ForeignKey(Genre, on_delete=models.CASCADE)

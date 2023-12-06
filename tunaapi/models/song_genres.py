@@ -1,6 +1,6 @@
 from django.db import models
-from .songs import Song
-from .genres import Genre
+from ..models.songs import Song
+from ..models.genres import Genre
 
 class SongGenre(models.Model):
     """Model relationship between songs and genres"""
