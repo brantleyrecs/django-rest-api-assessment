@@ -3,7 +3,7 @@ from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers, status
 from django.db.models import Count
-from tunaapi.models import Artist, Song
+from tunaapi.models import Artist
 
 class ArtistView(ViewSet):
   
@@ -46,6 +46,12 @@ class ArtistView(ViewSet):
         
         serializer = ArtistSerializer(artist)  
         return Response(serializer.data, status=status.HTTP_200_OK)
+      
+  def destroy(self, request, pk):
+    
+        artist = Artist.objects.get(pk=pk)
+        artist.delete()
+        return Response(None, status=status.HTTP_204_NO_CONTENT)
 
 class ArtistSerializer(serializers.ModelSerializer):
     
@@ -53,9 +59,3 @@ class ArtistSerializer(serializers.ModelSerializer):
     model = Artist
     fields = ('id', 'name', 'age', 'bio')
     depth = 1
-
-  # def get_songs(self, obj):
-  #       """Get them songs"""
-  #       songs = obj.songs.all()  # Get all the related songs for the given artist
-  #       serializer = SongSerializer(songs, many=True)  # Create a new SongSerializer instance for serializing the list of songs
-  #       return serializer.data  # Return the serialized data of the list of songs
