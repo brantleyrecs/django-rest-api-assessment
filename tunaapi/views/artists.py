@@ -10,9 +10,7 @@ class ArtistView(ViewSet):
   def retrieve(self, request, pk):
     
     try:
-      artist = Artist.objects.annotate(
-        song_count=Count('songs')
-    ).get(pk=pk)
+      artist = Artist.objects.get(pk=pk)
       serializer = ArtistSerializer(artist)
       return Response(serializer.data, status=status.HTTP_200_OK)
     except Artist.DoesNotExist as ex:
@@ -20,11 +18,13 @@ class ArtistView(ViewSet):
       
   def list(self, request):
     
-    artists = Artist.objects.annotate(song_count=Count('songs')).all()
+    try:
+      artists = Artist.objects.all()
+      serializer = ArtistSerializer(artists, many=True)
+      return Response(serializer.data)
+    except Artist.DoesNotExist as ex:
+      return Response({'message': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
     
-    serializer = ArtistSerializer(artists, many=True)
-    return Response(serializer.data, status=status.HTTP_200_OK)
-  
   def create(self, request):
     """creating an artist"""
     artist = Artist.objects.create(
@@ -42,12 +42,20 @@ class ArtistView(ViewSet):
         artist.name = request.data["name"]
         artist.age = request.data["age"]
         artist.bio = request.data["bio"]
-        artist.save()     
-        return Response('Artist edited', status=status.HTTP_200_OK)
+        artist.save()   
+        
+        serializer = ArtistSerializer(artist)  
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 class ArtistSerializer(serializers.ModelSerializer):
     
   class Meta:
     model = Artist
-    fields = ('id', 'name', 'age', 'bio', 'song_count', 'song')
+    fields = ('id', 'name', 'age', 'bio')
     depth = 1
+
+  # def get_songs(self, obj):
+  #       """Get them songs"""
+  #       songs = obj.songs.all()  # Get all the related songs for the given artist
+  #       serializer = SongSerializer(songs, many=True)  # Create a new SongSerializer instance for serializing the list of songs
+  #       return serializer.data  # Return the serialized data of the list of songs
