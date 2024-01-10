@@ -27,27 +27,6 @@ class SongGenreView(ViewSet):
           song=song,
           genre=genre
         )
-    
-        # try:
-        #     song = Song.objects.get(id=song)
-        # except Song.DoesNotExist:
-        #     return Response(
-        #         {"error": f"Song with id {song} does not exist."},
-        #         status=status.HTTP_404_NOT_FOUND
-        #     )
-          
-        # try:
-        #     genre = Genre.objects.get(id=genre)
-        # except Genre.DoesNotExist:
-        #     return Response(
-        #         {"error": f"Genre with id {genre} does not exist."},
-        #         status=status.HTTP_404_NOT_FOUND
-        #     )
-
-        # song_genre = SongGenre.objects.create(
-        #     song_id=song,
-        #     genre_id=genre,
-        #     )
         
         serializer = SongGenreSerializer(song_genre)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
